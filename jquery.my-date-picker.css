@@ -1,0 +1,82 @@
+.my-date-picker-container {
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  background-color: white;
+  padding: 7px;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: small;
+}
+.my-date-picker-container .cell {
+  text-align: center;
+  margin: 0; padding: 0;
+  border-bottom: 1px solid #d4d4d4;
+  border-right: 1px solid #d4d4d4;
+}
+.my-date-picker-container .cell:last-child {
+  border-right: 0px none;
+}
+
+.my-date-picker-container:after {
+  top: 50%; right: 100%;
+  border: solid transparent;
+  content: " ";
+  width: 0; height: 0;
+  position: absolute;
+  pointer-events: none;
+  border-right-color: white;
+  border-width: 6px;
+  margin-top: -10px;
+}
+
+.my-date-picker-content {
+  background-color: #f1f1f1;
+  height: 100%;
+}
+
+.my-date-picker-header {
+  position: relative;
+  background-color: #f0f0f0;
+  background: linear-gradient(#f0f0f0, #dedede);
+}
+
+.my-date-picker-closer {
+  position: absolute;
+  top: 2px; right: 2px;
+  cursor: pointer;
+}
+
+.my-date-picker-month {
+  text-align: center;
+  text-transform: uppercase;
+  padding: 10px;
+}
+
+.my-date-picker-weekdays {
+
+}
+.my-date-picker-weekdays table {
+  border-collapse: collapse;
+}
+.my-date-picker-weekdays .weekday {
+}
+
+.my-date-picker-days-viewport {
+  overflow: hidden;
+}
+.my-date-picker-days {
+}
+.my-date-picker-days table {
+  border-collapse: collapse;
+}
+.my-date-picker-days .day {
+}
+.my-date-picker-days .day.disabled {
+  color: gray;
+}
+.my-date-picker-days .day.selected {
+  background-color: #421e4e;
+  color: white;
+}
+.my-date-picker-days .day:hover {
+  background-color: #d1bdd8;
+}
