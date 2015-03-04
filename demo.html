@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Calendar Widget Demo</title>
+  <script src="lib/jquery-2.1.3.min.js"></script>
+  <script src="jquery.my-date-picker.js"></script>
+  <style type="text/css">
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    .my-date-picker-wrapper {
+      position: absolute;
+      top:0; right: 0; bottom: 0; left: 0;
+      margin: auto;
+      vertical-align: middle;
+      width: 250px; height: 50px;
+    }
+  </style>
+  <script>
+    $(function() {
+      $("#my-date-picker-input").myDatePicker();
+    });
+  </script>
+</head>
+<body>
+  <div class="my-date-picker-wrapper">
+    <label for="my-date-picker-input">Select Date</label>
+    <input id="my-date-picker-input" type="text">
+  </div>
+</body>
+</html>
