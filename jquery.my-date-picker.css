@@ -3,7 +3,6 @@
   background-color: white;
   padding: 7px;
   font-family: sans-serif;
-  font-weight: bold;
   font-size: small;
 }
 .my-date-picker-container .cell {
@@ -49,6 +48,7 @@
   text-align: center;
   text-transform: uppercase;
   padding: 10px;
+  font-weight: bold;
 }
 
 .my-date-picker-weekdays {
@@ -64,6 +64,7 @@
   overflow: hidden;
 }
 .my-date-picker-days {
+  font-weight: bold;
 }
 .my-date-picker-days table {
   border-collapse: collapse;
