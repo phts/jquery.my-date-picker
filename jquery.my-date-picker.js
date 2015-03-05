@@ -49,6 +49,10 @@
     var height = settings.height;
     var top = $input.offset().top + $input.height()/2 - height/2;
     var left = $input.offset().left + $input.width()*2/3;
+    if (top + height > $(document).height()) top = $(document).height() - height - 20;
+    if (top < 20) top = 20;
+    if (left + width > $(document).width()) left = $(document).width() - width - 20;
+    if (left < 20) left = 20;
     $container
       .appendTo("body")
       .width(width).height(height)
