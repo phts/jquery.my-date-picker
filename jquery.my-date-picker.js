@@ -23,6 +23,7 @@
       return;
     }
     var date = new Date();
+    var selectedDate = $input.val();
 
     var $container = $("<div class='my-date-picker-container' />");
     $input.data("my-date-picker", $container);
@@ -39,9 +40,9 @@
       close.call(input);
     });
 
-    drawMonth(date, $month);
-    drawWeekdays($weekdays);
-    drawDays(date, $days);
+    drawMonth.call(input, date, $month);
+    drawWeekdays.call(input, $weekdays);
+    drawDays.call(input, date, $days, selectedDate);
 
     var width = settings.width;
     var height = settings.height;
@@ -83,7 +84,8 @@
     $toDiv.append(html);
   }
 
-  function drawDays(date, $toDiv) {
+  function drawDays(date, $toDiv, selectedDate) {
+    var input = this;
     var $table = $("<table/>");
     var $tbody = $("<tbody/>").appendTo($table);
     var $row;
@@ -109,6 +111,13 @@
       var $cell = $("<td class='cell day'>"+date.getDate()+"</td>");
       if (include(settings.disabledWeekdays, getDay(date))) {
         $cell.addClass('disabled');
+      } else {
+        $cell.addClass('available');
+        var dateString = dateToString(date);
+        $cell.data("dateString", dateString);
+        if (dateString == selectedDate) {
+          $cell.addClass('selected');
+        }
       }
       $row.append($cell);
       date.setDate(date.getDate()+1);
@@ -116,6 +125,18 @@
 
     $tbody.append($row);
     $toDiv.append($table);
+
+    $("td.available", $toDiv).on('click', function() {
+      var dateString = $(this).data("dateString");
+      if (!dateString) return;
+      select.call(input, dateString);
+    });
+  }
+
+  function select(dateString) {
+    var $input = $(this);
+    $input.val(dateString);
+    close.call(this);
   }
 
   function getDay(date) {
@@ -128,6 +149,12 @@
 
   function include(array, value) {
     return array.indexOf(value) != -1;
+  }
+
+  function dateToString(date) {
+    var dateString = date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
+    var monthString = date.getMonth() < 10 ? "0"+date.getMonth() : date.getMonth();
+    return dateString + "-" + monthString + "-" + date.getFullYear();
   }
 
   $.fn.myDatePicker = function(options) {

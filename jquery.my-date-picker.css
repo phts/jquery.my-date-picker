@@ -71,6 +71,9 @@
 }
 .my-date-picker-days .day {
 }
+.my-date-picker-days .day.available {
+    cursor: pointer;
+}
 .my-date-picker-days .day.disabled {
   color: gray;
 }
