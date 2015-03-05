@@ -97,11 +97,7 @@
         if ($row) $tbody.append($row);
         $row = $("<tr/>");
       }
-      var $cell = $("<td class='cell day disabled'>"+date.getDate()+"</td>");
-      if (date.getDate() == 1) {
-        $cell.append("<span class='month-name'><span class='month-name-text'>"+settings.shortMonths[date.getMonth()]+"</span></span>");
-      }
-      $row.append($cell);
+      $row.append(makeCell(date, true, selectedDate));
       date.setDate(date.getDate()+1);
     }
 
@@ -111,20 +107,7 @@
         if ($row) $tbody.append($row);
         $row = $("<tr/>");
       }
-      var $cell = $("<td class='cell day'>"+date.getDate()+"</td>");
-      if (date.getDate() == 1) {
-        $cell.append("<span class='month-name'><span class='month-name-text'>"+settings.shortMonths[date.getMonth()]+"</span></span>");
-      }
-      if (include(settings.disabledWeekdays, getDay(date))) {
-        $cell.addClass('disabled');
-      } else {
-        $cell.addClass('available');
-        var dateString = dateToString(date);
-        $cell.data("dateString", dateString);
-        if (dateString == selectedDate) {
-          $cell.addClass('selected');
-        }
-      }
+      var $cell = makeCell(date, include(settings.disabledWeekdays, getDay(date)), selectedDate);
       $row.append($cell);
       date.setDate(date.getDate()+1);
     }
@@ -137,6 +120,24 @@
       if (!dateString) return;
       select.call(input, dateString);
     });
+  }
+
+  function makeCell(date, disabled, selectedDate) {
+    var $cell = $("<td class='cell day'>"+date.getDate()+"</td>");
+    if (date.getDate() == 1) {
+      $cell.append("<span class='month-name'><span class='month-name-text'>"+settings.shortMonths[date.getMonth()]+"</span></span>");
+    }
+    if (disabled) {
+      $cell.addClass('disabled');
+    } else {
+      $cell.addClass('available');
+      var dateString = dateToString(date);
+      $cell.data("dateString", dateString);
+      if (dateString == selectedDate) {
+        $cell.addClass('selected');
+      }
+    }
+    return $cell;
   }
 
   function select(dateString) {
