@@ -13,20 +13,19 @@
   function initOne(settings) {
     var $input = $(this);
     $input.prop('readonly', true);
-    $input.on("click", show);
+    $input.on("click", function() {
+      show($input);
+    });
   }
 
-  function show() {
-    var input = this;
-    var $input = $(this);
-
+  function show($input) {
     var $container = $input.data('my-date-picker');
     if (!$container) {
-      $container = build.call(input);
+      $container = build($input);
       $input.data("my-date-picker", $container);
     }
     if ($container.is(':visible')) {
-      close.call(input);
+      close($input);
       return;
     }
 
@@ -36,18 +35,15 @@
     var date = new Date();
     var selectedDate = $input.val();
 
-    drawMonth.call(input, date, $month);
-    drawDays.call(input, date, $days, selectedDate);
+    drawMonth(date, $month);
+    drawDays($input, date, $days, selectedDate);
 
     $container.show();
-    fixContainerPosition.call(input, $container);
-    fixCellsPosition.call(input, $container);
+    fixContainerPosition($input, $container);
+    fixCellsPosition($input, $container);
   }
 
-  function build() {
-    var input = this;
-    var $input = $(this);
-
+  function build($input) {
     var $container = $("<div class='my-date-picker-container' />");
     var $content = $("<div class='my-date-picker-content' />").appendTo($container);
     var $header = $("<div class='my-date-picker-header' />").appendTo($content);
@@ -58,18 +54,16 @@
     var $days = $("<div class='my-date-picker-days' />").appendTo($daysViewport);
 
     $closeBtn.on('click', function() {
-      close.call(input);
+      close($input);
     });
 
-    drawWeekdays.call(input, $weekdays);
+    drawWeekdays($weekdays);
 
     $container.hide().appendTo("body")
     return $container;
   }
 
-  function fixContainerPosition($container) {
-    var $input = $(this);
-
+  function fixContainerPosition($input, $container) {
     var width = settings.width;
     var height = settings.height;
     var top = $input.offset().top + $input.height()/2 - height/2;
@@ -84,8 +78,7 @@
       .offset({top: top, left: left});
   }
 
-  function fixCellsPosition($container) {
-    var $input = $(this);
+  function fixCellsPosition($input, $container) {
     var $content = $(".my-date-picker-content", $container);
     var $header = $(".my-date-picker-header", $container);
     var $daysViewport = $(".my-date-picker-days-viewport", $container);
@@ -97,9 +90,7 @@
     $daysViewport.height($content.height() - $header.outerHeight(true));
   }
 
-  function close() {
-    var $input = $(this);
-
+  function close($input) {
     var $container = $input.data("my-date-picker");
     if (!$container) {
       return;
@@ -120,8 +111,7 @@
     $toDiv.append(html);
   }
 
-  function drawDays(date, $toDiv, selectedDate) {
-    var input = this;
+  function drawDays($input, date, $toDiv, selectedDate) {
     var $table = $("<table/>");
     var $tbody = $("<tbody/>").appendTo($table);
     var $row;
@@ -154,7 +144,7 @@
     $("td.available", $toDiv).on('click', function() {
       var dateString = $(this).data("dateString");
       if (!dateString) return;
-      select.call(input, dateString);
+      select($input, dateString);
     });
   }
 
@@ -180,10 +170,9 @@
     return $cell;
   }
 
-  function select(dateString) {
-    var $input = $(this);
+  function select($input, dateString) {
     $input.val(dateString);
-    close.call(this);
+    close($input);
   }
 
   function getDay(date) {
