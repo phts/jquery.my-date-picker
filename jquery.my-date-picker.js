@@ -130,8 +130,12 @@
     if (disabled) {
       $cell.addClass('disabled');
     } else {
-      $cell.addClass('available');
       var dateString = dateToString(date);
+      if (include(settings.disabledDates, dateString)) {
+        $cell.addClass('disabled');
+      } else {
+        $cell.addClass('available');
+      }
       $cell.data("dateString", dateString);
       if (dateString == selectedDate) {
         $cell.addClass('selected');
@@ -177,7 +181,8 @@
     shortMonths: ["Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     pastWeeks: 2,
     featureWeeks: 25,
-    disabledWeekdays: [7]
+    disabledWeekdays: [7],
+    disabledDates: []
   };
 
 }(jQuery));
