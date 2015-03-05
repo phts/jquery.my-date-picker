@@ -12,6 +12,7 @@
 
   function initOne(settings) {
     var $input = $(this);
+    $input.prop('readonly', true);
     $input.on("click", show);
   }
 
