@@ -70,6 +70,7 @@
   border-collapse: collapse;
 }
 .my-date-picker-days .day {
+  position: relative;
 }
 .my-date-picker-days .day.available {
     cursor: pointer;
@@ -83,4 +84,21 @@
 }
 .my-date-picker-days .day:hover {
   background-color: #d1bdd8;
+}
+
+.my-date-picker-days .day .month-name {
+  position: absolute;
+  top: 0; left: 0;
+  width: 10px; height: 100%;
+  line-height: 9px;
+  display: block;
+  word-wrap: break-word;
+  text-transform: uppercase;
+  background-color: black;
+  color: #f1f1f1;
+  font-size: 10px;
+}
+.my-date-picker-days .day .month-name-text {
+  display: block;
+  margin-top: 3px;
 }

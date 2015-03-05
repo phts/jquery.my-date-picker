@@ -98,6 +98,9 @@
         $row = $("<tr/>");
       }
       var $cell = $("<td class='cell day disabled'>"+date.getDate()+"</td>");
+      if (date.getDate() == 1) {
+        $cell.append("<span class='month-name'><span class='month-name-text'>"+settings.shortMonths[date.getMonth()]+"</span></span>");
+      }
       $row.append($cell);
       date.setDate(date.getDate()+1);
     }
@@ -109,6 +112,9 @@
         $row = $("<tr/>");
       }
       var $cell = $("<td class='cell day'>"+date.getDate()+"</td>");
+      if (date.getDate() == 1) {
+        $cell.append("<span class='month-name'><span class='month-name-text'>"+settings.shortMonths[date.getMonth()]+"</span></span>");
+      }
       if (include(settings.disabledWeekdays, getDay(date))) {
         $cell.addClass('disabled');
       } else {
@@ -167,6 +173,7 @@
     height: 350,
     weekdays: ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
     months: ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "October", "November", "December"],
+    shortMonths: ["Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     pastWeeks: 2,
     featureWeeks: 25,
     disabledWeekdays: [7]
