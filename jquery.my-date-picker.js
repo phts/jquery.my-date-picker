@@ -19,16 +19,36 @@
   function show() {
     var input = this;
     var $input = $(this);
-    if ($input.data('my-date-picker')) {
-      close.call(this);
+
+    var $container = $input.data('my-date-picker');
+    if (!$container) {
+      $container = build.call(input);
+      $input.data("my-date-picker", $container);
+    }
+    if ($container.is(':visible')) {
+      close.call(input);
       return;
     }
+
+    var $month = $(".my-date-picker-month", $container);
+    var $days = $(".my-date-picker-days", $container);
+
     var date = new Date();
     var selectedDate = $input.val();
 
-    var $container = $("<div class='my-date-picker-container' />");
-    $input.data("my-date-picker", $container);
+    drawMonth.call(input, date, $month);
+    drawDays.call(input, date, $days, selectedDate);
 
+    $container.show();
+    fixContainerPosition.call(input, $container);
+    fixCellsPosition.call(input, $container);
+  }
+
+  function build() {
+    var input = this;
+    var $input = $(this);
+
+    var $container = $("<div class='my-date-picker-container' />");
     var $content = $("<div class='my-date-picker-content' />").appendTo($container);
     var $header = $("<div class='my-date-picker-header' />").appendTo($content);
     var $month = $("<div class='my-date-picker-month' />").appendTo($header);
@@ -41,9 +61,14 @@
       close.call(input);
     });
 
-    drawMonth.call(input, date, $month);
     drawWeekdays.call(input, $weekdays);
-    drawDays.call(input, date, $days, selectedDate);
+
+    $container.hide().appendTo("body")
+    return $container;
+  }
+
+  function fixContainerPosition($container) {
+    var $input = $(this);
 
     var width = settings.width;
     var height = settings.height;
@@ -53,10 +78,17 @@
     if (top < 20) top = 20;
     if (left + width > $(document).width()) left = $(document).width() - width - 20;
     if (left < 20) left = 20;
+
     $container
-      .appendTo("body")
       .width(width).height(height)
       .offset({top: top, left: left});
+  }
+
+  function fixCellsPosition($container) {
+    var $input = $(this);
+    var $content = $(".my-date-picker-content", $container);
+    var $header = $(".my-date-picker-header", $container);
+    var $daysViewport = $(".my-date-picker-days-viewport", $container);
 
     var $cell = $(".cell", $container);
     var newCellWidth = $content.width() / 7 - parseInt($cell.css("border-left-width")) - parseInt($cell.css("border-right-width"));
@@ -72,8 +104,7 @@
     if (!$container) {
       return;
     }
-    $container.remove();
-    $input.removeData("my-date-picker");
+    $container.hide();
   }
 
   function drawMonth(date, $toDiv) {
@@ -118,7 +149,7 @@
     }
 
     $tbody.append($row);
-    $toDiv.append($table);
+    $toDiv.html($table);
 
     $("td.available", $toDiv).on('click', function() {
       var dateString = $(this).data("dateString");
