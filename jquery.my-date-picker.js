@@ -192,7 +192,9 @@
     _makeCell: function(date, disabled, selectedDate) {
       var $cell = $("<td class='cell day'>"+date.getDate()+"</td>");
       if (date.getDate() == 1) {
-        $cell.append("<span class='month-name'><span class='month-name-text'>"+this.settings.shortMonths[date.getMonth()]+"</span></span>");
+        $cell.append("<span class='month-name'><span class='month-name-text'>" +
+          this.settings.shortMonths[date.getMonth()].split("").join("<br/>") +
+          "</span></span>");
       }
       if (disabled) {
         $cell.addClass('disabled');
