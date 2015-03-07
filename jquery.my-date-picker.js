@@ -81,7 +81,7 @@
       }
 
       var date = new Date();
-      var selectedDate = this.$input.val();
+      var selectedDate = this._getValue();
 
       this._drawMonth(date, this.$monthEl);
       this._drawDays(date, this.$daysEl, selectedDate);
@@ -212,8 +212,16 @@
     },
 
     _select: function(dateString) {
-      this.$input.val(dateString);
+      this._setValue(dateString);
       this._close();
+    },
+
+    _getValue: function() {
+      return this.$input.val();
+    },
+
+    _setValue: function(value) {
+      this.$input.val(value);
     },
 
     _getDay: function(date) {
