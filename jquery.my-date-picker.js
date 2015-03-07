@@ -54,7 +54,8 @@
     featureWeeks: 25,
     disabledWeekdays: [7],
     disabledDates: [],
-    useScrollWheel: true
+    useScrollWheel: true,
+    showScrollButtons: true
   };
 
   MyDatePicker.prototype = {
@@ -119,6 +120,28 @@
           _this._scrollDelta(delta);
           return false;
         });
+      }
+
+      if (this.settings.showScrollButtons) {
+        var getScrollerFn = function(delta) {
+          return function scrollerFn() {
+            var $el = $(this);
+            var interval = setInterval(function() {
+              if (!$el.is(":hover")) {
+                clearInterval(interval);
+                return;
+              }
+              _this._scrollDelta(delta);
+            }, 100);
+          }
+        }
+        this.$topScrollButton = $("<div class='my-date-picker-top-scroll-button' />")
+          .appendTo(this.$daysViewportEl)
+          .on("mouseover", getScrollerFn(-10))
+          .hide();
+        this.$bottomScrollButton = $("<div class='my-date-picker-bottom-scroll-button' />")
+          .appendTo(this.$daysViewportEl)
+          .on("mouseover", getScrollerFn(10));
       }
 
       this._drawWeekdays(this.$weekdaysEl);
@@ -289,8 +312,12 @@
       var maxScroll = this.$daysEl.height() - this.$daysViewportEl.height();
       if (top < minScroll) {
         top = minScroll;
+        this._showScrollButtons(false, true);
       } else if (top > maxScroll) {
         top = maxScroll;
+        this._showScrollButtons(true, false);
+      } else {
+        this._showScrollButtons(true, true);
       }
       this.$daysEl.css({position: "absolute", top: -top, left: 0});
     },
@@ -300,6 +327,12 @@
       var rowTop = rowHeight * rowNumber;
       var scroll = this._getScroll();
       return rowTop > scroll && rowTop+rowHeight < scroll+this.$daysViewportEl.height();
+    },
+
+    _showScrollButtons: function(showTopButton, showBottomButton) {
+      if (!this.settings.showScrollButtons) return;
+      showTopButton ? this.$topScrollButton.show() : this.$topScrollButton.hide();
+      showBottomButton ? this.$bottomScrollButton.show() : this.$bottomScrollButton.hide();
     }
 
   };

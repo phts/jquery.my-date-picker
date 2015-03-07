@@ -64,6 +64,21 @@
   position: relative;
   overflow: hidden;
 }
+.my-date-picker-top-scroll-button, .my-date-picker-bottom-scroll-button {
+  position: absolute;
+  width: 100%; height: 10px;
+}
+.my-date-picker-top-scroll-button {
+  top: 0;
+  border-bottom: 1px solid #d4d4d4;
+  background: #dedede url(img/scroll-up.png) no-repeat center;
+}
+.my-date-picker-bottom-scroll-button {
+  bottom: 0;
+  border-top: 1px solid #d4d4d4;
+  background: #dedede url(img/scroll-down.png) no-repeat center;
+}
+
 .my-date-picker-days {
   font-weight: bold;
 }
