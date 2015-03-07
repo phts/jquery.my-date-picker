@@ -52,7 +52,8 @@
     pastWeeks: 2,
     featureWeeks: 25,
     disabledWeekdays: [7],
-    disabledDates: []
+    disabledDates: [],
+    useScrollWheel: true
   };
 
   MyDatePicker.prototype = {
@@ -105,6 +106,18 @@
       this.$closeBtnEl.on('click', function() {
         _this._close();
       });
+
+      if (this.settings.useScrollWheel) {
+        this.$daysViewportEl.on("mousewheel DOMMouseScroll", function(event) {
+          var delta = -20;
+          if (event.originalEvent.wheelDelta < 0 || event.originalEvent.detail > 0) {
+            // wheel down
+            delta = 20;
+          }
+          _this._scrollDelta(delta);
+          return false;
+        });
+      }
 
       this._drawWeekdays(this.$weekdaysEl);
 
@@ -246,6 +259,25 @@
 
     _isShown: function() {
       return !!this.$containerEl && this.$containerEl.is(':visible');
+    },
+
+    _scrollDelta: function(delta) {
+      this._setScroll(this._getScroll() + delta);
+    },
+
+    _getScroll: function() {
+      return -this.$daysEl.position().top;
+    },
+
+    _setScroll: function(top) {
+      var minScroll = 0;
+      var maxScroll = this.$daysEl.height() - this.$daysViewportEl.height();
+      if (top < minScroll) {
+        top = minScroll;
+      } else if (top > maxScroll) {
+        top = maxScroll;
+      }
+      this.$daysEl.css({position: "absolute", top: -top, left: 0});
     }
 
   };

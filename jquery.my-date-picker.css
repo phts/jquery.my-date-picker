@@ -61,6 +61,7 @@
 }
 
 .my-date-picker-days-viewport {
+  position: relative;
   overflow: hidden;
 }
 .my-date-picker-days {
