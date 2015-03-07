@@ -65,6 +65,10 @@
       this.$input.on("click", function() {
         _this._show();
       });
+      $(window).on('resize', function() {
+        if (!_this._isShown()) return;
+        _this._fixContainerPosition();
+      });
     },
 
     _show: function() {
@@ -236,6 +240,10 @@
       var dateString = date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
       var monthString = date.getMonth() < 10 ? "0"+date.getMonth() : date.getMonth();
       return dateString + "-" + monthString + "-" + date.getFullYear();
+    },
+
+    _isShown: function() {
+      return !!this.$container && this.$container.is(':visible');
     }
 
   };
