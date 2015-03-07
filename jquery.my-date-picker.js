@@ -72,47 +72,43 @@
     },
 
     _show: function() {
-      if (!this.$container) {
-        this.$container = this._build();
+      if (!this.$containerEl) {
+        this._build();
       }
-      if (this.$container.is(':visible')) {
+      if (this.$containerEl.is(':visible')) {
         this._close();
         return;
       }
 
-      var $month = $(".my-date-picker-month", this.$container);
-      var $days = $(".my-date-picker-days", this.$container);
-
       var date = new Date();
       var selectedDate = this.$input.val();
 
-      this._drawMonth(date, $month);
-      this._drawDays(date, $days, selectedDate);
+      this._drawMonth(date, this.$monthEl);
+      this._drawDays(date, this.$daysEl, selectedDate);
 
-      this.$container.show();
+      this.$containerEl.show();
       this._fixContainerPosition();
       this._fixCellsPosition();
     },
 
     _build: function() {
       var _this = this;
-      var $container = $("<div class='my-date-picker-container' />");
-      var $content = $("<div class='my-date-picker-content' />").appendTo($container);
-      var $header = $("<div class='my-date-picker-header' />").appendTo($content);
-      var $month = $("<div class='my-date-picker-month' />").appendTo($header);
-      var $weekdays = $("<div class='my-date-picker-weekdays' />").appendTo($header);
-      var $closeBtn = $("<img class='my-date-picker-closer' src='img/close.png' alt='X'/>").appendTo($header);
-      var $daysViewport = $("<div class='my-date-picker-days-viewport' />").appendTo($content);
-      var $days = $("<div class='my-date-picker-days' />").appendTo($daysViewport);
+      this.$containerEl = $("<div class='my-date-picker-container' />");
+      this.$contentEl = $("<div class='my-date-picker-content' />").appendTo(this.$containerEl);
+      this.$headerEl = $("<div class='my-date-picker-header' />").appendTo(this.$contentEl);
+      this.$monthEl = $("<div class='my-date-picker-month' />").appendTo(this.$headerEl);
+      this.$weekdaysEl = $("<div class='my-date-picker-weekdays' />").appendTo(this.$headerEl);
+      this.$closeBtnEl = $("<img class='my-date-picker-closer' src='img/close.png' alt='X'/>").appendTo(this.$headerEl);
+      this.$daysViewportEl = $("<div class='my-date-picker-days-viewport' />").appendTo(this.$contentEl);
+      this.$daysEl = $("<div class='my-date-picker-days' />").appendTo(this.$daysViewportEl);
 
-      $closeBtn.on('click', function() {
+      this.$closeBtnEl.on('click', function() {
         _this._close();
       });
 
-      this._drawWeekdays($weekdays);
+      this._drawWeekdays(this.$weekdaysEl);
 
-      $container.hide().appendTo("body")
-      return $container;
+      this.$containerEl.hide().appendTo("body")
     },
 
     _fixContainerPosition: function() {
@@ -125,25 +121,21 @@
       if (left + width > $(document).width()) left = $(document).width() - width - 20;
       if (left < 20) left = 20;
 
-      this.$container
+      this.$containerEl
         .width(width).height(height)
         .css({position: "absolute", top: top, left: left});
     },
 
     _fixCellsPosition: function() {
-      var $content = $(".my-date-picker-content", this.$container);
-      var $header = $(".my-date-picker-header", this.$container);
-      var $daysViewport = $(".my-date-picker-days-viewport", this.$container);
-
-      var $cell = $(".cell", this.$container);
-      var newCellWidth = $content.width() / 7 - parseInt($cell.css("border-left-width")) - parseInt($cell.css("border-right-width"));
+      var $cell = $(".cell", this.$containerEl);
+      var newCellWidth = this.$contentEl.width() / 7 - parseInt($cell.css("border-left-width")) - parseInt($cell.css("border-right-width"));
       $cell.width(newCellWidth).height(newCellWidth).css("line-height", newCellWidth+"px");
 
-      $daysViewport.height($content.height() - $header.outerHeight(true));
+      this.$daysViewportEl.height(this.$contentEl.height() - this.$headerEl.outerHeight(true));
     },
 
     _close: function() {
-      this.$container.hide();
+      this.$containerEl.hide();
     },
 
     _drawMonth: function(date, $toDiv) {
@@ -243,7 +235,7 @@
     },
 
     _isShown: function() {
-      return !!this.$container && this.$container.is(':visible');
+      return !!this.$containerEl && this.$containerEl.is(':visible');
     }
 
   };
