@@ -123,7 +123,7 @@
 
       this.$container
         .width(width).height(height)
-        .offset({top: top, left: left});
+        .css({position: "absolute", top: top, left: left});
     },
 
     _fixCellsPosition: function() {
