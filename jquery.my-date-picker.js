@@ -46,6 +46,7 @@
   MyDatePicker.defaults = {
     width: 250,
     height: 350,
+    closeButtonImg: "img/close.png",
     weekdays: ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
     months: ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "October", "November", "December"],
     shortMonths: ["Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -99,7 +100,7 @@
       this.$headerEl = $("<div class='my-date-picker-header' />").appendTo(this.$contentEl);
       this.$monthEl = $("<div class='my-date-picker-month' />").appendTo(this.$headerEl);
       this.$weekdaysEl = $("<div class='my-date-picker-weekdays' />").appendTo(this.$headerEl);
-      this.$closeBtnEl = $("<img class='my-date-picker-closer' src='img/close.png' alt='X'/>").appendTo(this.$headerEl);
+      this.$closeBtnEl = $("<img class='my-date-picker-closer' src='"+this.settings.closeButtonImg+"' alt='X'/>").appendTo(this.$headerEl);
       this.$daysViewportEl = $("<div class='my-date-picker-days-viewport' />").appendTo(this.$contentEl);
       this.$daysEl = $("<div class='my-date-picker-days' />").appendTo(this.$daysViewportEl);
 
