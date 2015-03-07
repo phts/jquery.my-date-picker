@@ -182,7 +182,7 @@
           if ($row) $tbody.append($row);
           $row = $("<tr/>");
         }
-        var $cell = this._makeCell(date, this._include(this.settings.disabledWeekdays, this._getDay(date)), selectedDate);
+        var $cell = this._makeCell(date, this._isIncluded(this.settings.disabledWeekdays, this._getDay(date)), selectedDate);
         $row.append($cell);
         date.setDate(date.getDate()+1);
       }
@@ -206,7 +206,7 @@
         $cell.addClass('disabled');
       } else {
         var dateString = this._dateToString(date);
-        if (this._include(this.settings.disabledDates, dateString)) {
+        if (this._isIncluded(this.settings.disabledDates, dateString)) {
           $cell.addClass('disabled');
         } else {
           $cell.addClass('available');
@@ -232,7 +232,7 @@
       return day;
     },
 
-    _include: function(array, value) {
+    _isIncluded: function(array, value) {
       return array.indexOf(value) != -1;
     },
 
