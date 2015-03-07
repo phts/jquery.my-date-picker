@@ -171,6 +171,30 @@
       var $tbody = $("<tbody/>").appendTo($table);
       var $row;
 
+      var makeCell = function(date, disabled) {
+        var $cell = $("<td class='cell day'>"+date.getDate()+"</td>");
+        if (date.getDate() == 1) {
+          $cell.append("<span class='month-name'><span class='month-name-text'>" +
+            _this.settings.shortMonths[date.getMonth()].split("").join("<br/>") +
+            "</span></span>");
+        }
+        if (disabled) {
+          $cell.addClass('disabled');
+        } else {
+          var dateString = _this._dateToString(date);
+          if (_this._isIncluded(_this.settings.disabledDates, dateString)) {
+            $cell.addClass('disabled');
+          } else {
+            $cell.addClass('available');
+          }
+          $cell.data("dateString", dateString);
+          if (dateString == selectedDate) {
+            $cell.addClass('selected');
+          }
+        }
+        return $cell;
+      };
+
       var pastDays = 7 * this.settings.pastWeeks + this._getDay(date) - 1;
       date.setDate(date.getDate()-pastDays);
       for (var day = 0; day < pastDays; day++) {
@@ -178,7 +202,7 @@
           if ($row) $tbody.append($row);
           $row = $("<tr/>");
         }
-        $row.append(this._makeCell(date, true, selectedDate));
+        $row.append(makeCell(date, true));
         date.setDate(date.getDate()+1);
       }
 
@@ -188,7 +212,7 @@
           if ($row) $tbody.append($row);
           $row = $("<tr/>");
         }
-        var $cell = this._makeCell(date, this._isIncluded(this.settings.disabledWeekdays, this._getDay(date)), selectedDate);
+        var $cell = makeCell(date, this._isIncluded(this.settings.disabledWeekdays, this._getDay(date)));
         $row.append($cell);
         date.setDate(date.getDate()+1);
       }
@@ -201,30 +225,6 @@
         if (!dateString) return;
         _this._select(dateString);
       });
-    },
-
-    _makeCell: function(date, disabled, selectedDate) {
-      var $cell = $("<td class='cell day'>"+date.getDate()+"</td>");
-      if (date.getDate() == 1) {
-        $cell.append("<span class='month-name'><span class='month-name-text'>" +
-          this.settings.shortMonths[date.getMonth()].split("").join("<br/>") +
-          "</span></span>");
-      }
-      if (disabled) {
-        $cell.addClass('disabled');
-      } else {
-        var dateString = this._dateToString(date);
-        if (this._isIncluded(this.settings.disabledDates, dateString)) {
-          $cell.addClass('disabled');
-        } else {
-          $cell.addClass('available');
-        }
-        $cell.data("dateString", dateString);
-        if (dateString == selectedDate) {
-          $cell.addClass('selected');
-        }
-      }
-      return $cell;
     },
 
     _select: function(dateString) {
