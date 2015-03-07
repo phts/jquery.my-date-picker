@@ -86,11 +86,12 @@
       var selectedDate = this._getValue();
 
       this._drawMonth(date, this.$monthEl);
-      this._drawDays(date, this.$daysEl, selectedDate);
+      var selectedRowNumber = this._drawDays(date, this.$daysEl, selectedDate);
 
       this.$containerEl.show();
       this._fixContainerPosition();
       this._fixCellsPosition();
+      this._scrollTo(selectedRowNumber || 0);
     },
 
     _build: function() {
@@ -169,7 +170,9 @@
       var _this = this;
       var $table = $("<table/>");
       var $tbody = $("<tbody/>").appendTo($table);
+      var rows = [];
       var $row;
+      var selectedRowNumber = null;
 
       var makeCell = function(date, disabled) {
         var $cell = $("<td class='cell day'>"+date.getDate()+"</td>");
@@ -190,6 +193,7 @@
           $cell.data("dateString", dateString);
           if (dateString == selectedDate) {
             $cell.addClass('selected');
+            selectedRowNumber = rows.length;
           }
         }
         return $cell;
@@ -199,7 +203,7 @@
       date.setDate(date.getDate()-pastDays);
       for (var day = 0; day < pastDays; day++) {
         if (day % 7 == 0) {
-          if ($row) $tbody.append($row);
+          if ($row) rows.push($row);
           $row = $("<tr/>");
         }
         $row.append(makeCell(date, true));
@@ -209,7 +213,7 @@
       var featureDays = 7 * this.settings.featureWeeks + 7 - this._getDay(date);
       for (var day = pastDays; day < (pastDays+featureDays+1); day++) {
         if (day % 7 == 0) {
-          if ($row) $tbody.append($row);
+          if ($row) rows.push($row);
           $row = $("<tr/>");
         }
         var $cell = makeCell(date, this._isIncluded(this.settings.disabledWeekdays, this._getDay(date)));
@@ -217,7 +221,8 @@
         date.setDate(date.getDate()+1);
       }
 
-      $tbody.append($row);
+      rows.push($row);
+      $tbody.append(rows);
       $toDiv.html($table);
 
       $("td.available", $toDiv).on('click', function() {
@@ -225,6 +230,7 @@
         if (!dateString) return;
         _this._select(dateString);
       });
+      return selectedRowNumber;
     },
 
     _select: function(dateString) {
@@ -266,6 +272,14 @@
       this._setScroll(this._getScroll() + delta);
     },
 
+    _scrollTo: function(rowNumber) {
+      var ROWS_BEFORE = 2;
+      var rowHeight = $("tr", this.$daysEl).height();
+      if (!this._isRowVisible(rowNumber)) {
+        this._setScroll(rowHeight * (rowNumber - ROWS_BEFORE));
+      }
+    },
+
     _getScroll: function() {
       return -this.$daysEl.position().top;
     },
@@ -279,6 +293,13 @@
         top = maxScroll;
       }
       this.$daysEl.css({position: "absolute", top: -top, left: 0});
+    },
+
+    _isRowVisible: function(rowNumber) {
+      var rowHeight = $("tr", this.$daysEl).height();
+      var rowTop = rowHeight * rowNumber;
+      var scroll = this._getScroll();
+      return rowTop > scroll && rowTop+rowHeight < scroll+this.$daysViewportEl.height();
     }
 
   };
