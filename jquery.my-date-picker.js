@@ -123,25 +123,31 @@
       }
 
       if (this.settings.showScrollButtons) {
-        var getScrollerFn = function(delta) {
-          return function scrollerFn() {
+        var getScrollStartFn = function(delta) {
+          return function scrollStartFn(event) {
             var $el = $(this);
+            $el.addClass('hover');
             var interval = setInterval(function() {
-              if (!$el.is(":hover")) {
+              if (!$el.hasClass("hover")) {
                 clearInterval(interval);
                 return;
               }
               _this._scrollDelta(delta);
             }, 100);
-          }
-        }
+          };
+        };
+        var scrollStopFn = function() {
+          $(this).removeClass('hover');
+        };
         this.$topScrollButton = $("<div class='my-date-picker-top-scroll-button' />")
           .appendTo(this.$daysViewportEl)
-          .on("mouseover", getScrollerFn(-10))
+          .on("mouseover", getScrollStartFn(-10))
+          .on('mouseleave', scrollStopFn)
           .hide();
         this.$bottomScrollButton = $("<div class='my-date-picker-bottom-scroll-button' />")
           .appendTo(this.$daysViewportEl)
-          .on("mouseover", getScrollerFn(10));
+          .on("mouseover", getScrollStartFn(10))
+          .on('mouseleave', scrollStopFn);
       }
 
       this._drawWeekdays(this.$weekdaysEl);
