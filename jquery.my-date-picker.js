@@ -72,12 +72,10 @@
         if (!_this._isShown()) return;
         _this._fixContainerPosition();
       });
+      this._build();
     },
 
     _show: function() {
-      if (!this.$containerEl) {
-        this._build();
-      }
       if (this.$containerEl.is(':visible')) {
         this._close();
         return;
@@ -87,7 +85,10 @@
       var selectedDate = this._getValue();
 
       this._drawMonth(date, this.$monthEl);
-      var selectedRowNumber = this._drawDays(date, this.$daysEl, selectedDate);
+      if (this._updateCachedDate(date)) {
+        this._drawDays(date, this.$daysEl);
+      }
+      var selectedRowNumber = this._drawSelectedDay(selectedDate);
 
       this.$containerEl.show();
       this._fixContainerPosition();
@@ -196,13 +197,12 @@
       $toDiv.append(html);
     },
 
-    _drawDays: function(date, $toDiv, selectedDate) {
+    _drawDays: function(date, $toDiv) {
       var _this = this;
       var $table = $("<table/>");
       var $tbody = $("<tbody/>").appendTo($table);
       var rows = [];
       var $row;
-      var selectedRowNumber = null;
 
       var makeCell = function(date, disabled) {
         var $cell = $("<td class='cell day'>"+date.getDate()+"</td>");
@@ -221,10 +221,6 @@
             $cell.addClass('available');
           }
           $cell.data("dateString", dateString);
-          if (dateString == selectedDate) {
-            $cell.addClass('selected');
-            selectedRowNumber = rows.length;
-          }
         }
         return $cell;
       };
@@ -259,6 +255,26 @@
         var dateString = $(this).data("dateString");
         if (!dateString) return;
         _this._select(dateString);
+      });
+    },
+
+    _drawSelectedDay: function(selectedDate) {
+      var selectedRowNumber = null;
+      var $selectedCell = $(".selected", this.$daysEl);
+      if ($selectedCell.data("dateString") == selectedDate) {
+        // required cell is already selected
+        return $("tbody tr", this.$daysEl).index($selectedCell.parent());
+      }
+      $selectedCell.removeClass("selected");
+
+      $("td", this.$daysEl).each(function(index, el) {
+        var $cell = $(this);
+        var dateString = $cell.data("dateString");
+        if (dateString == selectedDate) {
+          $cell.addClass('selected');
+          selectedRowNumber = $("tbody tr", this.$daysEl).index($cell.parent());
+          return false;
+        }
       });
       return selectedRowNumber;
     },
@@ -340,6 +356,15 @@
       if (!this.settings.showScrollButtons) return;
       showTopButton ? this.$topScrollButton.show() : this.$topScrollButton.hide();
       showBottomButton ? this.$bottomScrollButton.show() : this.$bottomScrollButton.hide();
+    },
+
+    _updateCachedDate: function(date) {
+      var dateString = this._dateToString(date);
+      if (this.cachedDate != dateString) {
+        this.cachedDate = dateString;
+        return true;
+      }
+      return false;
     }
 
   };
