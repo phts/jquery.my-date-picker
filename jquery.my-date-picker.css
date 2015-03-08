@@ -2,6 +2,7 @@
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
   background-color: white;
   padding: 7px;
+  border: 1px solid #d4d4d4;
   font-family: sans-serif;
   font-size: small;
 }
@@ -79,6 +80,11 @@
 }
 .my-date-picker-days table {
   border-collapse: collapse;
+}
+.my-date-picker-weekdays, .my-date-picker-weekdays table, .my-date-picker-weekdays thead,
+.my-date-picker-days, .my-date-picker-days table, .my-date-picker-days tbody {
+  /* Fix cells width in IE8 because IE8 doesn't support decimal values */
+  width: 100%;
 }
 .my-date-picker-days .day {
   position: relative;
