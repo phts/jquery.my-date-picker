@@ -166,8 +166,9 @@
 
     _fixCellsPosition: function() {
       var $cell = $(".cell", this.$containerEl);
-      var newCellWidth = this.$contentEl.width() / 7 - parseInt($cell.css("border-left-width")) - parseInt($cell.css("border-right-width"));
-      $cell.width(newCellWidth).height(newCellWidth).css("line-height", newCellWidth+"px");
+      var newCellWidth = this.$contentEl.width() / 7;
+      $cell.outerWidth(newCellWidth).outerHeight(newCellWidth);
+      $cell.css("line-height", $cell.height()+"px");
 
       this.$daysViewportEl.height(this.$contentEl.height() - this.$headerEl.outerHeight(true));
     },
