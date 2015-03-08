@@ -51,13 +51,8 @@
   font-weight: bold;
 }
 
-.my-date-picker-weekdays {
-
-}
 .my-date-picker-weekdays table {
   border-collapse: collapse;
-}
-.my-date-picker-weekdays .weekday {
 }
 
 .my-date-picker-days-viewport {
