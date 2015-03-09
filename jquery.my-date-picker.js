@@ -51,7 +51,7 @@
     months: ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "October", "November", "December"],
     shortMonths: ["Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     pastWeeks: 2,
-    futureWeeks: 25,
+    futureDays: 180,
     disabledWeekdays: [7],
     disabledDates: [],
     useScrollWheel: true,
@@ -227,8 +227,10 @@
 
       var day = 0;
       var pastDays = 7 * this.settings.pastWeeks + this._getDay(date) - 1;
-      var futureDays = 7 * this.settings.futureWeeks + 7 - this._getDay(date) + 1;
-      var totalDays = pastDays + futureDays;
+      var futureDays = this.settings.futureDays;
+      var exceededDays = 7 - (pastDays+futureDays) % 7;
+      if (exceededDays == 7) exceededDays = 0;
+      var totalDays = pastDays + futureDays + exceededDays;
       date.setDate(date.getDate()-pastDays);
       while (day < totalDays) {
         if (day % 7 == 0) {
@@ -242,10 +244,13 @@
         if (day < pastDays) {
           // past days
           $row.append(makeCell(date, true));
-        } else if (day < totalDays) {
+        } else if (day < pastDays+futureDays) {
           // today+future days
           var $cell = makeCell(date, this._isIncluded(this.settings.disabledWeekdays, this._getDay(date)));
           $row.append($cell);
+        } else if (day < totalDays) {
+          // exceeded days
+          $row.append(makeCell(date, true));
         }
         date.setDate(date.getDate()+1);
         day++;
