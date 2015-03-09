@@ -341,7 +341,10 @@
     _setScroll: function(top) {
       var minScroll = 0;
       var maxScroll = this.$daysEl.height() - this.$daysViewportEl.height();
-      if (top < minScroll) {
+      if (maxScroll <= 0) {
+        top = minScroll;
+        this._showScrollButtons(false, false);
+      } else if (top < minScroll) {
         top = minScroll;
         this._showScrollButtons(false, true);
       } else if (top > maxScroll) {
