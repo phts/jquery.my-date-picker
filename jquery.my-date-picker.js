@@ -88,7 +88,7 @@
 
       this._drawMonth(date, this.$monthEl);
       if (this._updateCachedDate(date)) {
-        this._drawDays(date, this.$daysEl);
+        this._drawDays(date, this.$daysEl, selectedDate);
       }
       var selectedRowNumber = this._drawSelectedDay(selectedDate);
 
@@ -199,7 +199,7 @@
       $toDiv.append(html);
     },
 
-    _drawDays: function(date, $toDiv) {
+    _drawDays: function(date, $toDiv, selectedDate) {
       var _this = this;
       var $table = $("<table/>");
       var $tbody = $("<tbody/>").appendTo($table);
@@ -223,6 +223,9 @@
             $cell.addClass('available');
           }
           $cell.data("dateString", dateString);
+          if (dateString == selectedDate) {
+            $cell.addClass('selected');
+          }
         }
         return $cell;
       };
