@@ -51,7 +51,7 @@
     months: ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "October", "November", "December"],
     shortMonths: ["Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     pastWeeks: 2,
-    featureWeeks: 25,
+    futureWeeks: 25,
     disabledWeekdays: [7],
     disabledDates: [],
     useScrollWheel: true,
@@ -236,8 +236,8 @@
         date.setDate(date.getDate()+1);
       }
 
-      var featureDays = 7 * this.settings.featureWeeks + 7 - this._getDay(date);
-      for (var day = pastDays; day < (pastDays+featureDays+1); day++) {
+      var futureDays = 7 * this.settings.futureWeeks + 7 - this._getDay(date);
+      for (var day = pastDays; day < (pastDays+futureDays+1); day++) {
         if (day % 7 == 0) {
           if ($row) rows.push($row);
           $row = $("<tr/>");
