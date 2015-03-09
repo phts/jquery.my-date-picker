@@ -55,7 +55,9 @@
     disabledWeekdays: [7],
     disabledDates: [],
     useScrollWheel: true,
-    showScrollButtons: true
+    pxPerScrollWheel: 20,
+    showScrollButtons: true,
+    pxPerScrollButtons: 10
   };
 
   MyDatePicker.prototype = {
@@ -113,10 +115,10 @@
 
       if (this.settings.useScrollWheel) {
         this.$daysViewportEl.on("mousewheel DOMMouseScroll", function(event) {
-          var delta = -20;
+          var delta = -_this.settings.pxPerScrollWheel;
           if (event.originalEvent.wheelDelta < 0 || event.originalEvent.detail > 0) {
             // wheel down
-            delta = 20;
+            delta = _this.settings.pxPerScrollWheel;
           }
           _this._scrollDelta(delta);
           return false;
@@ -142,12 +144,12 @@
         };
         this.$topScrollButton = $("<div class='my-date-picker-top-scroll-button' />")
           .appendTo(this.$daysViewportEl)
-          .on("mouseover", getScrollStartFn(-10))
+          .on("mouseover", getScrollStartFn(-_this.settings.pxPerScrollButtons))
           .on('mouseleave', scrollStopFn)
           .hide();
         this.$bottomScrollButton = $("<div class='my-date-picker-bottom-scroll-button' />")
           .appendTo(this.$daysViewportEl)
-          .on("mouseover", getScrollStartFn(10))
+          .on("mouseover", getScrollStartFn(_this.settings.pxPerScrollButtons))
           .on('mouseleave', scrollStopFn);
       }
 
