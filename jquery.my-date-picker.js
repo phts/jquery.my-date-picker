@@ -40,7 +40,7 @@
 
   var MyDatePicker = function(options, input) {
     this.$input = $(input);
-    this._init(options)
+    this.init(options)
   }
 
   MyDatePicker.defaults = {
@@ -62,7 +62,7 @@
 
   MyDatePicker.prototype = {
 
-    _init: function(options) {
+    init: function(options) {
       var _this = this;
       this.settings = $.extend({}, MyDatePicker.defaults, options);
 
