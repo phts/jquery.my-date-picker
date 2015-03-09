@@ -225,29 +225,32 @@
         return $cell;
       };
 
+      var day = 0;
       var pastDays = 7 * this.settings.pastWeeks + this._getDay(date) - 1;
+      var futureDays = 7 * this.settings.futureWeeks + 7 - this._getDay(date) + 1;
+      var totalDays = pastDays + futureDays;
       date.setDate(date.getDate()-pastDays);
-      for (var day = 0; day < pastDays; day++) {
+      while (day < totalDays) {
         if (day % 7 == 0) {
-          if ($row) rows.push($row);
+          // every Monday
           $row = $("<tr/>");
         }
-        $row.append(makeCell(date, true));
-        date.setDate(date.getDate()+1);
-      }
-
-      var futureDays = 7 * this.settings.futureWeeks + 7 - this._getDay(date);
-      for (var day = pastDays; day < (pastDays+futureDays+1); day++) {
-        if (day % 7 == 0) {
+        if (day % 7 == 6) {
+          // every Sunday
           if ($row) rows.push($row);
-          $row = $("<tr/>");
         }
-        var $cell = makeCell(date, this._isIncluded(this.settings.disabledWeekdays, this._getDay(date)));
-        $row.append($cell);
+        if (day < pastDays) {
+          // past days
+          $row.append(makeCell(date, true));
+        } else if (day < totalDays) {
+          // today+future days
+          var $cell = makeCell(date, this._isIncluded(this.settings.disabledWeekdays, this._getDay(date)));
+          $row.append($cell);
+        }
         date.setDate(date.getDate()+1);
+        day++;
       }
 
-      rows.push($row);
       $tbody.append(rows);
       $toDiv.html($table);
 
