@@ -314,7 +314,8 @@
 
     _dateToString: function(date) {
       var dateString = date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
-      var monthString = date.getMonth() < 10 ? "0"+date.getMonth() : date.getMonth();
+      var month = date.getMonth()+1;
+      var monthString = month < 10 ? "0"+month : month;
       return dateString + "-" + monthString + "-" + date.getFullYear();
     },
 
