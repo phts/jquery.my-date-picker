@@ -78,7 +78,7 @@
     },
 
     _show: function() {
-      if (this.$containerEl.is(':visible')) {
+      if (this._isShown()) {
         this._close();
         return;
       }
